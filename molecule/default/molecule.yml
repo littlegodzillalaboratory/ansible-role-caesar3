@@ -1,0 +1,22 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: delegated
+  options:
+    managed: False
+    ansible_connection_options:
+      ansible_connection: local
+platforms:
+  - name: instance
+    hostname: localhost
+    connection_options:
+      ansible_connection: local
+provisioner:
+  name: ansible
+verifier:
+  name: testinfra
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
