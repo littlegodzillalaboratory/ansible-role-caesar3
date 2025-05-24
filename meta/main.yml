@@ -14,7 +14,8 @@ galaxy_info:
     - caesar III
     - julius
     - city-building
+    - games
   platforms:
-    - name: Darwin
+    - name: macOS
       versions:
-        - jammy
+        - all
