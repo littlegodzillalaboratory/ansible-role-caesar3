@@ -1,4 +1,4 @@
 ---
 - name: Install Caesar III on macOS when os_family is Darwin
-  include_tasks: macos.yml
+  ansible.builtin.include_tasks: macos.yml
   when: ansible_facts and 'os_family' in ansible_facts and ansible_facts['os_family'] == 'Darwin'

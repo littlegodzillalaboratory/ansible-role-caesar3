@@ -4,16 +4,15 @@ collections:
 
 galaxy_info:
   namespace: cliffano
-  role_name: ansible-role-caesar3
+  role_name: caesar3
   author: Cliffano Subagio
   description: Ansible role for provisioning Caesar III city-building game
   license: "license (MIT)"
   min_ansible_version: 10.3.0
   galaxy_tags:
-    - caesar 3
-    - caesar III
+    - caesar3
+    - caesariii
     - julius
-    - city-building
     - games
   platforms:
     - name: macOS

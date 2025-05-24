@@ -40,12 +40,14 @@
     chdir: "{{ c3_install_dir }}/bin"
   register: julius_version_app_file_quarantine_check
   failed_when: false
+  changed_when: true
 
 - name: Disable quarantine of Julius app file
   ansible.builtin.command:
     cmd: "xattr -d com.apple.quarantine julius-{{ c3_julius_app_version }}-mac.dmg"
     chdir: "{{ c3_install_dir }}/bin"
   when: not julius_version_app_file.stat.exists and julius_version_app_file_quarantine_check.rc == 0
+  changed_when: true
 
 - name: Extract the setup file into the app folder
   ansible.builtin.command:
