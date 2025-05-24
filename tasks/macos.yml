@@ -22,26 +22,33 @@
     - "{{ c3_install_dir }}/bin"
     - "{{ c3_install_dir }}/julius-app"
 
-- name: "Get the status of Julius {{ julius_app_version }} app file"
+- name: "Get the status of Julius {{ c3_julius_app_version }} app file"
   ansible.builtin.stat:
-    path: "{{ c3_install_dir }}/bin/julius-{{ julius_app_version }}-mac.dmg"
-  register: julius_app_version_app_file
+    path: "{{ c3_install_dir }}/bin/julius-{{ c3_julius_app_version }}-mac.dmg"
+  register: julius_version_app_file
 
 - name: Download Julius app file
   ansible.builtin.get_url:
-    url: "https://github.com/bvschaik/julius/releases/download/v{{ julius_app_version }}/julius-{{ julius_app_version }}-mac.dmg"
-    dest: "{{ c3_install_dir }}/bin/julius-{{ julius_app_version }}-mac.dmg"
+    url: "https://github.com/bvschaik/julius/releases/download/v{{ c3_julius_app_version }}/julius-{{ c3_julius_app_version }}-mac.dmg"
+    dest: "{{ c3_install_dir }}/bin/julius-{{ c3_julius_app_version }}-mac.dmg"
     mode: 0644
-  when: not julius_app_version_app_file.stat.exists
+  when: not julius_version_app_file.stat.exists
+
+- name: Check if Julius app file has quarantine attribute
+  ansible.builtin.command:
+    cmd: "xattr -p com.apple.quarantine julius-{{ c3_julius_app_version }}-mac.dmg"
+    chdir: "{{ c3_install_dir }}/bin"
+  register: julius_version_app_file_quarantine_check
+  failed_when: false
 
 - name: Disable quarantine of Julius app file
   ansible.builtin.command:
-    cmd: "xattr -d com.apple.quarantine julius-{{ julius_app_version }}-mac.dmg"
+    cmd: "xattr -d com.apple.quarantine julius-{{ c3_julius_app_version }}-mac.dmg"
     chdir: "{{ c3_install_dir }}/bin"
-  when: not julius_app_version_app_file.stat.exists
+  when: not julius_version_app_file.stat.exists and julius_version_app_file_quarantine_check.rc == 0
 
 - name: Extract the setup file into the app folder
   ansible.builtin.command:
-    cmd: "innoextract -m {{ c3_setup_dir }}/setup_caesartm_{{ c3_gog_setup_version }}.exe
+    cmd: "innoextract -m {{ c3_gog_setup_dir }}/setup_caesartm_{{ c3_gog_setup_version }}.exe"
     chdir: "{{ c3_install_dir }}/julius-app"
   changed_when: true
