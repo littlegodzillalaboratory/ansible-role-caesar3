@@ -84,6 +84,7 @@ Config
 ------
 
 | Variable | Description | Default |
+|----------|-------------|---------|
 | c3_gog_setup_version | Version of GOG offline backup game installer, read [FAQ](#faq) for further info on the installer | 3_1.0.1.0_(76354) |
 | c3_gog_setup_dir | Directory where GOG offline backup game installer is located | /tmp |
 | c3_install_dir | Directory where Caesar 3 game resources will be located | /opt/caesar3 |
