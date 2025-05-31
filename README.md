@@ -89,6 +89,7 @@ Config
 | c3_gog_setup_dir | Directory where GOG offline backup game installer is located | /tmp |
 | c3_install_dir | Directory where Caesar 3 game resources will be located | /opt/caesar3 |
 | c3_julius_app_version | Version of Julius, available on [Julius Releases](https://github.com/bvschaik/julius/releases) page | '1.7.0' |
+| c3_julius_app_dir_mode | Mode of Julius app directory, read [FAQ](#faq) if you have a problem with saving the game | '0755' |
 
 FAQ
 ---
@@ -96,3 +97,8 @@ FAQ
 *Where can I get the GOG offline backup game installer?*
 
 If you purchased the original game from GOG, you cannot directly download the installer from [GOG's Caesar 3 game page](https://www.gog.com/en/game/caesar_3). And instead, you have to visit your GOG library, then click Caesar 3 from `My Collection` section. It will show Caesar 3 resources like this [screenshot](screenshots/gog-library.png). You can then download the offline backup game installer at the bottom of the Caesar III . This installer has the name pattern `setup_caesartm_<version>.exe` .
+
+*Why can't the non-admin users save the game?*
+
+If you're a non-admin user and the game was installed by an admin user, then this problem is caused by the fact that julius-app directory was created with mode 0755 which allows the non-admin user to read the game files but not write any game file. You can change the mode to another value which give the non-admin user permission to write the game files.
+

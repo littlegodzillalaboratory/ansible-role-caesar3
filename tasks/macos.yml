@@ -20,7 +20,12 @@
     mode: 0755
   loop:
     - "{{ c3_install_dir }}/bin"
-    - "{{ c3_install_dir }}/julius-app"
+
+- name: Ensure julius-app directory existence
+  ansible.builtin.file:
+    path: "{{ c3_install_dir }}/julius-app"
+    state: directory
+    mode: "{{ c3_julius_app_dir_mode }}"
 
 - name: "Get the status of Julius {{ c3_julius_app_version }} app file"
   ansible.builtin.stat:
