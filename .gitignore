@@ -1,4 +1,6 @@
 # Start of Studio gitignore
+.ansible/
+core
 molecule/default/core
 # End of Studio gitignore
 
