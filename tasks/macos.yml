@@ -11,13 +11,13 @@
   ansible.builtin.file:
     path: "{{ c3_install_dir }}"
     state: directory
-    mode: 0755
+    mode: "0755"
 
 - name: Ensure sub directories existence
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: 0755
+    mode: "0755"
   loop:
     - "{{ c3_install_dir }}/bin"
 
@@ -36,7 +36,7 @@
   ansible.builtin.get_url:
     url: "https://github.com/bvschaik/julius/releases/download/v{{ c3_julius_app_version }}/julius-{{ c3_julius_app_version }}-mac.dmg"
     dest: "{{ c3_install_dir }}/bin/julius-{{ c3_julius_app_version }}-mac.dmg"
-    mode: 0644
+    mode: "0644"
   when: not julius_version_app_file.stat.exists
 
 - name: Check if Julius app file has quarantine attribute
