@@ -1,11 +1,8 @@
-# https://github.com/ansible/molecule/issues/3903
-ansible-compat==3.0.2
+ansible-compat
 ansible-lint
 conflog
 docker
-minecraftverse
-# Need molecule lint command
-molecule==4.0.4
+molecule
 PyYAML
 pytest
 pytest-testinfra
