@@ -3,9 +3,9 @@ collections:
   - geerlingguy.mac
 
 galaxy_info:
-  namespace: cliffano
+  namespace: littlegodzillalaboratory
   role_name: caesar3
-  author: Cliffano Subagio
+  author: Cliffano Subagio <cliffano@gmail.com>
   description: Ansible role for provisioning Caesar III city-building game
   license: "license (MIT)"
   min_ansible_version: 10.3.0
