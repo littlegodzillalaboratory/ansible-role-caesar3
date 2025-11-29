@@ -1,6 +1,6 @@
-<img align="right" src="https://raw.github.com/cliffano/ansible-role-caesar3/main/avatar.jpg" alt="Avatar"/>
+<img align="right" src="https://raw.github.com/littlegodzillalaboratory/ansible-role-caesar3/main/avatar.jpg" alt="Avatar"/>
 
-[![Build Status](https://github.com/cliffano/ansible-role-caesar3/workflows/CI/badge.svg)](https://github.com/cliffano/ansible-role-caesar3/actions?query=workflow%3ACI)
+[![Build Status](https://github.com/littlegodzillalaboratory/ansible-role-caesar3/workflows/CI/badge.svg)](https://github.com/littlegodzillalaboratory/ansible-role-caesar3/actions?query=workflow%3ACI)
 [![Security Status](https://snyk.io/test/github/cliffano/ansible-role-caesar3/badge.svg)](https://snyk.io/test/github/cliffano/ansible-role-caesar3)
 <br/>
 
@@ -31,7 +31,7 @@ Or direct from Github:
 
     roles:
 
-      - src: https://github.com/cliffano/ansible-role-caesar3
+      - src: https://github.com/littlegodzillalaboratory/ansible-role-caesar3
         path: roles/
 
 The download GOG offline backup game installer - Read [FAQ](#faq) for further info on the installer
