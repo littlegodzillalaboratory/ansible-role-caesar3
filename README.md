@@ -1,7 +1,7 @@
 <img align="right" src="https://raw.github.com/littlegodzillalaboratory/ansible-role-caesar3/main/avatar.jpg" alt="Avatar"/>
 
 [![Build Status](https://github.com/littlegodzillalaboratory/ansible-role-caesar3/workflows/CI/badge.svg)](https://github.com/littlegodzillalaboratory/ansible-role-caesar3/actions?query=workflow%3ACI)
-[![Security Status](https://snyk.io/test/github/cliffano/ansible-role-caesar3/badge.svg)](https://snyk.io/test/github/cliffano/ansible-role-caesar3)
+[![Security Status](https://snyk.io/test/github/littlegodzillalaboratory/ansible-role-caesar3/badge.svg)](https://snyk.io/test/github/littlegodzillalaboratory/ansible-role-caesar3)
 <br/>
 
 Ansible Role Caesar 3
@@ -24,7 +24,7 @@ From Ansible Galaxy:
 
     roles:
 
-      - src: cliffano.caesar3
+      - src: littlegodzillalaboratory.caesar3
         path: roles/
 
 Or direct from Github:
