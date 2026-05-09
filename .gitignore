@@ -1,7 +1,7 @@
 # Start of Studio gitignore
 .ansible/
 core
-molecule/default/core
+stage/
 # End of Studio gitignore
 
 # Created by https://www.toptal.com/developers/gitignore/api/macos,visualstudiocode,ansible,python

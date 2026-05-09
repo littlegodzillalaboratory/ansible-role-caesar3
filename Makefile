@@ -49,6 +49,13 @@ lint:
 test:
 	$(call python_venv,molecule test)
 
+test-examples:
+	mkdir -p stage/test-examples/
+	cd examples && \
+	for f in *.sh; do \
+	  bash -x "$$f"; \
+	done
+
 # Update Makefile to the latest version tag
 update-to-latest: TARGET_COBBLER_VERSION = $(shell curl -s https://api.github.com/repos/cliffano/cobbler/tags | jq -r '.[0].name')
 update-to-latest: update-to-version
@@ -61,4 +68,4 @@ update-to-main:
 update-to-version:
 	curl https://raw.githubusercontent.com/cliffano/cobbler/$(TARGET_COBBLER_VERSION)/src/Makefile-cobbler -o Makefile
 
-.PHONY: ci all clean rmdeps deps deps-upgrade lint test update-to-latest update-to-main update-to-version stage
+.PHONY: ci all stage clean rmdeps deps deps-upgrade lint test test-examples update-to-latest update-to-main update-to-version
