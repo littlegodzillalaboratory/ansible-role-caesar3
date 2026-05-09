@@ -5,7 +5,7 @@ collections:
 galaxy_info:
   namespace: littlegodzillalaboratory
   role_name: caesar3
-  author: Cliffano Subagio <cliffano@gmail.com>
+  author: Little Godzilla Laboratory <blah+lgl@cliffano.com>
   description: Ansible role for provisioning Caesar III city-building game
   license: "license (MIT)"
   min_ansible_version: 10.3.0
