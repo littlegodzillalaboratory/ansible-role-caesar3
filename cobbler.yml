@@ -4,8 +4,8 @@ author: Little Godzilla Laboratory
 generator:
   component: ansible-role
   inputs:
-    project_id: Ansible Role Caesar 3
-    project_name: caesar3
+    project_id: caesar3
+    project_name: Ansible Role Caesar 3
     project_desc: Ansible role for provisioning Caesar III city-building game
     author_name: Little Godzilla Laboratory
     author_email: blah+lgl@cliffano.com
