@@ -5,7 +5,7 @@
 
 # Ansible Role Caesar 3
 
-Ansible Role Caesar 3 is a Ansible role for provisioning [Julius](https://github.com/bvschaik/julius), which is used for playing [Caesar III city-building game](https://en.wikipedia.org/wiki/Caesar_III).
+Ansible Role Caesar 3 is an Ansible role for provisioning [Julius](https://github.com/bvschaik/julius), which is used for playing [Caesar III city-building game](https://en.wikipedia.org/wiki/Caesar_III).
 
 Julius requires the files from the original game:
 
