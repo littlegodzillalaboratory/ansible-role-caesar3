@@ -1,11 +1,9 @@
-<img align="right" src="https://raw.github.com/littlegodzillalaboratory/ansible-role-caesar3/main/avatar.jpg" alt="Avatar"/>
+![Avatar](avatar.jpg)
 
 [![Build Status](https://github.com/littlegodzillalaboratory/ansible-role-caesar3/workflows/CI/badge.svg)](https://github.com/littlegodzillalaboratory/ansible-role-caesar3/actions?query=workflow%3ACI)
 [![Security Status](https://snyk.io/test/github/littlegodzillalaboratory/ansible-role-caesar3/badge.svg)](https://snyk.io/test/github/littlegodzillalaboratory/ansible-role-caesar3)
-<br/>
 
-Ansible Role Caesar 3
----------------------
+# Ansible Role Caesar 3
 
 Ansible Role Caesar 3 is a Ansible role for provisioning [Julius](https://github.com/bvschaik/julius), which is used for playing [Caesar III city-building game](https://en.wikipedia.org/wiki/Caesar_III).
 
@@ -15,8 +13,7 @@ Julius requires the files from the original game:
 
 Ansible Role Caesar 3 currently only supports GOG offline backup game installer on macOS.
 
-Installation
-------------
+## Installation
 
 Add the role to Ansible `requirements.yml` .
 
@@ -36,8 +33,7 @@ Or direct from Github:
 
 The download GOG offline backup game installer - Read [FAQ](#faq) for further info on the installer
 
-Usage
------
+## Usage
 
 Add the role to playbook:
 
@@ -50,14 +46,14 @@ Add the role to playbook:
         c3_julius_app_version: '1.7.0'
 
       roles:
-        - cliffano.caesar3
+        - littlegodzillalaboratory.caesar3
 
 Or alternatively, as a task using import role:
 
       tasks:
 
         - ansible.builtin.import_role:
-            name: cliffano.caesar3
+            name: littlegodzillalaboratory.caesar3
           vars:
             c3_gog_setup_version: '3_1.0.1.0_(76354)'
             c3_gog_setup_dir: /tmp
@@ -80,8 +76,7 @@ When prompted for Caesar 3 folder, navigate to the `julius-app` directory, and c
 
 ![Julius Caesar 3 folder prompt](screenshots/julius-caesar3-folder.png)
 
-Config
-------
+## Config
 
 | Variable | Description | Default |
 |----------|-------------|---------|
@@ -91,8 +86,7 @@ Config
 | c3_julius_app_version | Version of Julius, available on [Julius Releases](https://github.com/bvschaik/julius/releases) page | '1.7.0' |
 | c3_julius_app_dir_mode | Mode of Julius app directory, read [FAQ](#faq) if you have a problem with saving the game | '0755' |
 
-FAQ
----
+## FAQ
 
 *Where can I get the GOG offline backup game installer?*
 
@@ -101,4 +95,3 @@ If you purchased the original game from GOG, you cannot directly download the in
 *Why can't the non-admin users save the game?*
 
 If you're a non-admin user and the game was installed by an admin user, then this problem is caused by the fact that julius-app directory was created with mode 0755 which allows the non-admin user to read the game files but not write any game file. You can change the mode to another value which give the non-admin user permission to write the game files.
-
