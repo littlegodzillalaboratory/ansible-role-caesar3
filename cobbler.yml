@@ -11,3 +11,4 @@ generator:
     author_email: blah+lgl@cliffano.com
     github_id: littlegodzillalaboratory
     github_repo: ansible-role-caesar3
+    github_token_prefix: LITTLEGODZILLALABORATORY
