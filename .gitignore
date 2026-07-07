@@ -1,6 +1,7 @@
 # Start of Studio gitignore
 .ansible/
 core
+docs/
 stage/
 # End of Studio gitignore
 

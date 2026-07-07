@@ -103,13 +103,13 @@ If you're a non-admin user and the game was installed by an admin user, then thi
 ## Colophon
 
 <!-- BEGIN:DEVELOPERS_GUIDE -->
-[Developer's Guide](https://cliffano.github.io/developers-guide-ansible.html)
+[Developer's Guide](https://littlegodzillalaboratory.github.io/developers-guide-ansible.html)
 <!-- END:DEVELOPERS_GUIDE -->
 
 <!-- BEGIN:BUILD_REPORTS -->
 Build reports:
 
-* [Lint report](https://cliffano.github.io/ansible-role-caesar3/lint/ansible-lint.txt)
-* [Test report](https://cliffano.github.io/ansible-role-caesar3/test/molecule.txt)
+* [Lint report](https://littlegodzillalaboratory.github.io/ansible-role-caesar3/lint/ansible-lint.txt)
+* [Test report](https://littlegodzillalaboratory.github.io/ansible-role-caesar3/test/molecule.txt)
 
 <!-- END:BUILD_REPORTS -->
