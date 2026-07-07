@@ -1,7 +1,11 @@
+<!-- BEGIN:AVATAR -->
 ![Avatar](avatar.jpg)
+<!-- END:AVATAR -->
 
+<!-- BEGIN:BADGES -->
 [![Build Status](https://github.com/littlegodzillalaboratory/ansible-role-caesar3/workflows/CI/badge.svg)](https://github.com/littlegodzillalaboratory/ansible-role-caesar3/actions?query=workflow%3ACI)
 [![Security Status](https://snyk.io/test/github/littlegodzillalaboratory/ansible-role-caesar3/badge.svg)](https://snyk.io/test/github/littlegodzillalaboratory/ansible-role-caesar3)
+<!-- END:BADGES -->
 
 # Ansible Role Caesar 3
 
@@ -95,3 +99,17 @@ If you purchased the original game from GOG, you cannot directly download the in
 *Why can't the non-admin users save the game?*
 
 If you're a non-admin user and the game was installed by an admin user, then this problem is caused by the fact that julius-app directory was created with mode 0755 which allows the non-admin user to read the game files but not write any game file. You can change the mode to another value which give the non-admin user permission to write the game files.
+
+## Colophon
+
+<!-- BEGIN:DEVELOPERS_GUIDE -->
+[Developer's Guide](https://cliffano.github.io/developers-guide-ansible.html)
+<!-- END:DEVELOPERS_GUIDE -->
+
+<!-- BEGIN:BUILD_REPORTS -->
+Build reports:
+
+* [Lint report](https://cliffano.github.io/ansible-role-caesar3/lint/ansible-lint.txt)
+* [Test report](https://cliffano.github.io/ansible-role-caesar3/test/molecule.txt)
+
+<!-- END:BUILD_REPORTS -->
