@@ -1,0 +1,43 @@
+
+playbook: /opt/workspace/molecule/default/converge.yml
+
+PLAY [Converge] ****************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Include workspace] *******************************************************
+included: littlegodzillalaboratory.caesar3 for localhost
+
+TASK [littlegodzillalaboratory.caesar3 : Install Caesar III on macOS when os_family is Darwin] ***
+[WARNING]: Error loading plugin 'meta': No module named 'ansible_collections.geerlingguy'
+skipping: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=2    changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
+
+
+PLAY [Converge] ****************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Include workspace] *******************************************************
+included: littlegodzillalaboratory.caesar3 for localhost
+
+TASK [littlegodzillalaboratory.caesar3 : Install Caesar III on macOS when os_family is Darwin] ***
+[WARNING]: Error loading plugin 'meta': No module named 'ansible_collections.geerlingguy'
+skipping: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=2    changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.0.1, pluggy-1.6.0
+rootdir: /
+plugins: testinfra-10.2.2
+collected 1 item
+
+tests/test_defaults.py .                                                 [100%]
+
+============================== 1 passed in 0.89s ===============================
