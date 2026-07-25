@@ -13,7 +13,9 @@ Ansible Role Caesar 3 is an Ansible role for provisioning [Julius](https://githu
 
 Julius requires the files from the original game:
 
-    Julius will not run without the original Caesar 3 files. You can buy a digital copy from GOG or Steam, or you can use an original CD-ROM version.
+```text
+Julius will not run without the original Caesar 3 files. You can buy a digital copy from GOG or Steam, or you can use an original CD-ROM version.
+```
 
 Ansible Role Caesar 3 currently only supports GOG offline backup game installer on macOS.
 
