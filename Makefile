@@ -3,32 +3,24 @@
 # https://github.com/cliffano/cobbler
 ################################################################
 
-# Cobbler's version number
-COBBLER_VERSION = 2.3.0
+# Cobbler info
+COBBLER_VERSION = 2.6.0
+
+UPDATE_MAKEFILE = cobbler
+UPDATE_GENERATOR = ansible
+UPDATE_DOTFILES = .github/. .ansible-lint .gitignore .yamllint .rtk.json AGENTS.md
+UPDATE_PARTIALS = AVATAR BADGES BUILD_REPORTS DEVELOPERS_GUIDE
 
 ################################################################
 # User configuration variables
 # https://github.com/cliffano/cobbler#configuration
-# These variables should be stored in cobbler.yml config file,
-# and they will be parsed using yq https://github.com/mikefarah/yq
+# Configuration variables should be stored in cobbler.yml config file
 
 # PACKAGE_NAME is the name of the Ansible role
 PACKAGE_NAME=$(shell yq .package_name cobbler.yml)
 
 # AUTHOR is the author of the Ansible role
 AUTHOR ?= $(shell yq .author cobbler.yml)
-
-define set_generator_vars
-$(1): GENERATOR_COMPONENT = $$(shell yq .generator.component cobbler.yml)
-$(1): GENERATOR_INPUTS_PROJECT_ID = $$(shell yq .generator.inputs.project_id cobbler.yml)
-$(1): GENERATOR_INPUTS_PROJECT_NAME = $$(shell yq .generator.inputs.project_name cobbler.yml)
-$(1): GENERATOR_INPUTS_PROJECT_DESC = $$(shell yq .generator.inputs.project_desc cobbler.yml)
-$(1): GENERATOR_INPUTS_AUTHOR_NAME = $$(shell yq .generator.inputs.author_name cobbler.yml)
-$(1): GENERATOR_INPUTS_AUTHOR_EMAIL = $$(shell yq .generator.inputs.author_email cobbler.yml)
-$(1): GENERATOR_INPUTS_GITHUB_ID = $$(shell yq .generator.inputs.github_id cobbler.yml)
-$(1): GENERATOR_INPUTS_GITHUB_REPO = $$(shell yq .generator.inputs.github_repo cobbler.yml)
-$(1): GENERATOR_INPUTS_GITHUB_TOKEN_PREFIX = $$(shell yq .generator.inputs.github_token_prefix cobbler.yml)
-endef
 
 $(info ################################################################)
 $(info Building Ansible role using Cobbler...)
@@ -37,22 +29,6 @@ $(info - Author = ${AUTHOR})
 
 define python_venv
 	. .venv/bin/activate && $(1)
-endef
-
-define run_hook
-	@if [ -f Makefile-extras ] && grep -q "^$(1):" Makefile-extras; then \
-		$(MAKE) -f Makefile-extras $(1); \
-	fi
-endef
-
-define deps_extra
-	@if command -v apt-get > /dev/null 2>&1; then \
-		if [ "$$(id -u)" = "0" ]; then \
-			$(MAKE) deps-extra-apt; \
-		else \
-			sudo $(MAKE) deps-extra-apt; \
-		fi; \
-	fi
 endef
 
 ################################################################
@@ -69,6 +45,9 @@ stage:
 # Remove all temporary (staged, generated, cached) files
 clean:
 	rm -rf stage/
+
+################################################################
+# Dependencies targets
 
 rmdeps:
 	rm -rf .venv/
@@ -88,77 +67,18 @@ deps-extra-apt:
 	apt-get install -y python3-venv 
 	apt-get install -y markdownlint
 
-# Update Makefile to the latest version tag
-update-to-latest: TARGET_COBBLER_VERSION = $(shell curl -s https://api.github.com/repos/cliffano/cobbler/tags | jq -r '.[0].name')
-update-to-latest: update-to-version
-
-# Update Makefile to the main branch
-update-to-main:
-	curl https://raw.githubusercontent.com/cliffano/cobbler/main/src/Makefile-cobbler -o Makefile
-
-# Update Makefile to the version defined in TARGET_COBBLER_VERSION parameter
-update-to-version:
-	curl https://raw.githubusercontent.com/cliffano/cobbler/$(TARGET_COBBLER_VERSION)/src/Makefile-cobbler -o Makefile
-
-# Update dotfiles using the generator-ansible
-$(eval $(call set_generator_vars,update-dotfiles))
-update-dotfiles: stage
-	cd stage/ && \
-	  rm -rf generator-ansible/ && \
-	  git clone https://github.com/cliffano/generator-ansible && \
-	  cd generator-ansible && \
-	  make deps && \
-	  node_modules/.bin/plop $(GENERATOR_COMPONENT) -- \
-	    --project_id "$(GENERATOR_INPUTS_PROJECT_ID)" \
-		--project_name "$(GENERATOR_INPUTS_PROJECT_NAME)" \
-		--project_desc "$(GENERATOR_INPUTS_PROJECT_DESC)" \
-		--author_name "$(GENERATOR_INPUTS_AUTHOR_NAME)" \
-		--author_email "$(GENERATOR_INPUTS_AUTHOR_EMAIL)" \
-		--github_id "$(GENERATOR_INPUTS_GITHUB_ID)" \
-		--github_repo "$(GENERATOR_INPUTS_GITHUB_REPO)" \
-		--github_token_prefix "$(GENERATOR_INPUTS_GITHUB_TOKEN_PREFIX)"
-	cd stage/generator-ansible/stage/$(GENERATOR_COMPONENT) && \
-	  cp -R .github/* ../../../../.github/ && \
-	  cp .ansible-lint ../../../../.ansible-lint && \
-	  cp .gitignore ../../../../.gitignore && \
-	  cp .yamllint ../../../../.yamllint && \
-	  cp .rtk.json ../../../../.rtk.json
-
-# Update partial snippets using the generator-ansible
-$(eval $(call set_generator_vars,update-partials))
-update-partials: stage
-	cd stage/ && \
-	  rm -rf generator-ansible/ && \
-	  git clone https://github.com/cliffano/generator-ansible && \
-	  cd generator-ansible && \
-	  make deps && \
-	  node_modules/.bin/plop $(GENERATOR_COMPONENT)-partials -- \
-	    --project_id "$(GENERATOR_INPUTS_PROJECT_ID)" \
-		--project_name "$(GENERATOR_INPUTS_PROJECT_NAME)" \
-		--project_desc "$(GENERATOR_INPUTS_PROJECT_DESC)" \
-		--author_name "$(GENERATOR_INPUTS_AUTHOR_NAME)" \
-		--author_email "$(GENERATOR_INPUTS_AUTHOR_EMAIL)" \
-		--github_id "$(GENERATOR_INPUTS_GITHUB_ID)" \
-		--github_repo "$(GENERATOR_INPUTS_GITHUB_REPO)" \
-		--github_token_prefix "$(GENERATOR_INPUTS_GITHUB_TOKEN_PREFIX)"
-	for block in AVATAR BADGES BUILD_REPORTS DEVELOPERS_GUIDE; do \
-	  partial_file=$$(printf "%s" "$$block" | tr "A-Z" "a-z"); \
-	  ex -s \
-	    -c "/<!-- BEGIN:$$block -->/+1,/<!-- END:$$block -->/-1d" \
-	    -c "/<!-- BEGIN:$$block -->/r stage/generator-ansible/stage/$(GENERATOR_COMPONENT)-partials/$$partial_file.txt" \
-	    -c 'wq' \
-	    README.md; \
-	done
+################################################################
+# Test targets
 
 lint:
-	mkdir -p docs/lint/
-	$(call python_venv,ansible-lint tasks/ &> docs/lint/ansible-lint.txt)
+	mkdir -p stage/gh-pages/lint/
+	$(call python_venv,ansible-lint tasks/ &> stage/gh-pages/lint/ansible-lint.txt)
 	$(call python_venv,yamllint .)
- 
+
 test:
 	$(call run_hook,x-pre-test)
-	mkdir -p docs/test/
-	$(call python_venv,molecule test > docs/test/molecule.txt)
+	mkdir -p stage/gh-pages/test/
+	$(call python_venv,molecule test > stage/gh-pages/test/molecule.txt)
 
 test-examples:
 	mkdir -p stage/test-examples/
@@ -166,5 +86,110 @@ test-examples:
 	for f in *.sh; do \
 	  bash -x "$$f"; \
 	done
+
+################################################################
+# MAKE IT SO - Utility Makefile functions and targets
+################################################################
+
+define run_hook
+	@if [ -f Makefile-extras ] && grep -q "^$(1):" Makefile-extras; then \
+		$(MAKE) -f Makefile-extras $(1); \
+	fi
+endef
+
+define deps_extra
+	@if command -v apt-get > /dev/null 2>&1; then \
+		if [ "$$(id -u)" = "0" ]; then \
+			$(MAKE) deps-extra-apt; \
+		else \
+			sudo $(MAKE) deps-extra-apt; \
+		fi; \
+	fi
+endef
+
+define update_dotfiles_from_generator
+	cd stage/ && \
+	  rm -rf generator-$(1)/ && \
+	  git clone https://github.com/cliffano/generator-$(1) && \
+	  cd generator-$(1) && \
+	  make deps && \
+	  node_modules/.bin/plop $(UPDATE_GENERATOR_COMPONENT) -- \
+	    --project_id "$(UPDATE_GENERATOR_INPUTS_PROJECT_ID)" \
+		--project_name "$(UPDATE_GENERATOR_INPUTS_PROJECT_NAME)" \
+		--project_desc "$(UPDATE_GENERATOR_INPUTS_PROJECT_DESC)" \
+		--author_name "$(UPDATE_GENERATOR_INPUTS_AUTHOR_NAME)" \
+		--author_email "$(UPDATE_GENERATOR_INPUTS_AUTHOR_EMAIL)" \
+		--author_url "$(UPDATE_GENERATOR_INPUTS_AUTHOR_URL)" \
+		--github_id "$(UPDATE_GENERATOR_INPUTS_GITHUB_ID)" \
+		--github_repo "$(UPDATE_GENERATOR_INPUTS_GITHUB_REPO)" \
+		--github_token_prefix "$(UPDATE_GENERATOR_INPUTS_GITHUB_TOKEN_PREFIX)"
+	cd stage/generator-$(1)/stage/$(UPDATE_GENERATOR_COMPONENT) && \
+	  for dotfile in $(2); do \
+		cp -R "$$dotfile" ../../../../"$$dotfile"; \
+	  done
+endef
+
+define update_partials_from_generator
+	cd stage/ && \
+	  rm -rf generator-$(1)/ && \
+	  git clone https://github.com/cliffano/generator-$(1) && \
+	  cd generator-$(1) && \
+	  make deps && \
+	  node_modules/.bin/plop $(UPDATE_GENERATOR_COMPONENT)-partials -- \
+	    --project_id "$(UPDATE_GENERATOR_INPUTS_PROJECT_ID)" \
+		--project_name "$(UPDATE_GENERATOR_INPUTS_PROJECT_NAME)" \
+		--project_desc "$(UPDATE_GENERATOR_INPUTS_PROJECT_DESC)" \
+		--author_name "$(UPDATE_GENERATOR_INPUTS_AUTHOR_NAME)" \
+		--author_email "$(UPDATE_GENERATOR_INPUTS_AUTHOR_EMAIL)" \
+		--author_url "$(UPDATE_GENERATOR_INPUTS_AUTHOR_URL)" \
+		--github_id "$(UPDATE_GENERATOR_INPUTS_GITHUB_ID)" \
+		--github_repo "$(UPDATE_GENERATOR_INPUTS_GITHUB_REPO)" \
+		--github_token_prefix "$(UPDATE_GENERATOR_INPUTS_GITHUB_TOKEN_PREFIX)"
+	for block in $(2); do \
+	  partial_file=$$(printf "%s" "$$block" | tr "A-Z" "a-z"); \
+	  ex -s \
+	    -c "/<!-- BEGIN:$$block -->/+1,/<!-- END:$$block -->/-1d" \
+	    -c "/<!-- BEGIN:$$block -->/r stage/generator-$(1)/stage/$(UPDATE_GENERATOR_COMPONENT)-partials/$$partial_file.txt" \
+	    -c 'wq' \
+	    README.md; \
+	done
+endef
+
+define set_generator_vars
+$(1): UPDATE_GENERATOR_COMPONENT = $$(shell yq .generator.component $(2).yml)
+$(1): UPDATE_GENERATOR_INPUTS_PROJECT_ID = $$(shell yq .generator.inputs.project_id $(2).yml)
+$(1): UPDATE_GENERATOR_INPUTS_PROJECT_NAME = $$(shell yq .generator.inputs.project_name $(2).yml)
+$(1): UPDATE_GENERATOR_INPUTS_PROJECT_DESC = $$(shell yq .generator.inputs.project_desc $(2).yml)
+$(1): UPDATE_GENERATOR_INPUTS_AUTHOR_NAME = $$(shell yq .generator.inputs.author_name $(2).yml)
+$(1): UPDATE_GENERATOR_INPUTS_AUTHOR_EMAIL = $$(shell yq .generator.inputs.author_email $(2).yml)
+$(1): UPDATE_GENERATOR_INPUTS_AUTHOR_URL = $$(shell yq .generator.inputs.author_url $(2).yml)
+$(1): UPDATE_GENERATOR_INPUTS_GITHUB_ID = $$(shell yq .generator.inputs.github_id $(2).yml)
+$(1): UPDATE_GENERATOR_INPUTS_GITHUB_REPO = $$(shell yq .generator.inputs.github_repo $(2).yml)
+$(1): UPDATE_GENERATOR_INPUTS_GITHUB_TOKEN_PREFIX = $$(shell yq .generator.inputs.github_token_prefix $(2).yml)
+endef
+
+# Update Makefile to the latest version tag
+update-to-latest: UPDATE_TARGET_VERSION = $(shell curl -s https://api.github.com/repos/cliffano/$(UPDATE_MAKEFILE)/tags | jq -r '.[0].name')
+update-to-latest: update-to-version
+
+# Update Makefile to the main branch
+update-to-main:
+	curl https://raw.githubusercontent.com/cliffano/$(UPDATE_MAKEFILE)/main/src/Makefile-$(UPDATE_MAKEFILE) -o Makefile
+
+# Update Makefile to the version defined in UPDATE_TARGET_VERSION parameter
+update-to-version:
+	curl https://raw.githubusercontent.com/cliffano/$(UPDATE_MAKEFILE)/$(UPDATE_TARGET_VERSION)/src/Makefile-$(UPDATE_MAKEFILE) -o Makefile
+
+# Update dotfiles using the generator
+$(eval $(call set_generator_vars,update-dotfiles,$(UPDATE_MAKEFILE)))
+update-dotfiles: stage
+	$(call update_dotfiles_from_generator,$(UPDATE_GENERATOR),$(UPDATE_DOTFILES))
+
+# Update partial snippets using the generator
+$(eval $(call set_generator_vars,update-partials,$(UPDATE_MAKEFILE)))
+update-partials: stage
+	$(call update_partials_from_generator,$(UPDATE_GENERATOR),$(UPDATE_PARTIALS))
+
+################################################################
 
 .PHONY: $(1) ci all stage clean rmdeps deps deps-upgrade deps-extra-apt lint test test-examples update-to-latest update-to-main update-to-version update-dotfiles update-partials

@@ -3,20 +3,20 @@ name: CI
 on: [push, pull_request, workflow_dispatch]
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
         with:
           set-safe-directory: ${{ github.workspace }}
-      - uses: cliffano/command-docker-action@v1.4.0
+      - uses: cliffano/command-docker-action@v2.0.0
         with:
           command: 'make deps'
           image: cliffano/studio:3.2.0
-      - uses: cliffano/command-docker-action@v1.4.0
+      - uses: cliffano/command-docker-action@v2.0.0
         with:
           command: 'make ci'
           image: cliffano/studio:3.2.0
       - uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.LITTLEGODZILLALABORATORY_GITHUB_TOKEN }}
-          publish_dir: docs
+          publish_dir: stage/gh-pages
